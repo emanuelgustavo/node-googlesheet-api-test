@@ -23,7 +23,8 @@
     },
     "homepage": "https://github.com/emanuelgustavo/node-soap-api#readme",
     "dependencies": {
-        "express": "^4.17.1"
+        "express": "^4.17.1",
+        "soap": "^0.42.0"
     },
     "devDependencies": {
         "nodemon": "^2.0.12"
