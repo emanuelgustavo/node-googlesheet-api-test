@@ -16,13 +16,7 @@ export default function ApiTest(){
     };
     let resultOfApi = '';
 
-    const xlms = `<?xml version="1.0" encoding="utf-8"?>
-    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
-      <soap:Body>
-        <ListOfCountryNamesByCode xmlns="http://www.oorsprong.org/websamples.countryinfo">
-        </ListOfCountryNamesByCode>
-      </soap:Body>
-    </soap:Envelope>`;
+    const xlms = `<?xml version="1.0" encoding="utf-8"?><soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"><soap:Body><ListOfCountryNamesByCode xmlns="http://www.oorsprong.org/websamples.countryinfo"></ListOfCountryNamesByCode></soap:Body></soap:Envelope>`;
 
     axios.post(`${url}/${opListOfCountryNamesByCode}`, xlms, config)
         .then( response => {
