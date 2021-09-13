@@ -1,7 +1,10 @@
+import React from "react";
+
+import Routes from "./routes";
 
 function App() {
   return (
-    <p>Hello world soap-api!!</p>
+    <Routes />
   );
 }
 
