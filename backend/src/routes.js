@@ -1,5 +1,7 @@
 const express = require('express');
 
+const soapApi = require('./soap-api/getCountryNamesByCode.js');
+
 const routes = express.Router();
 
 //index
@@ -15,5 +17,8 @@ routes.get('/helloworld', (req, res) => {
     'Hello World'
   );
 });
+
+//helloWorld
+routes.get('test', soapApi.getListOfCountryNamesByCode);
 
 module.exports = routes;
