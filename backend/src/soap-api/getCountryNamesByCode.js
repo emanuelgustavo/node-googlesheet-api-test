@@ -1,6 +1,4 @@
 const soap = require('easy-soap-request');
-const util = require('util');
-const { parseString } = require('xml2js');
 
 const url = 'http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?wsdl';
 const header = {
@@ -25,19 +23,6 @@ module.exports = {
     });
     
     const { body } = response;
-
-    //console.log(body);    
-
-    //const objectBody = util.inspect(body, false, Infinity);
-
-    /* const listOfCountry = parseString(body, (err, result) => {
-      
-      if(err) return
-
-      const parsedResult = util.format(result, '%O');
-      return parsedResult;
-
-    }); */
 
     const arrayBody = body.split('\n');
 
