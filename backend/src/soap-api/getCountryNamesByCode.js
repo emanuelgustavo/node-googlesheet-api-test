@@ -14,43 +14,52 @@ const xml = `<?xml version="1.0" encoding="utf-8"?>
             </soap:Envelope>`
 
 module.exports = {
-
+  
   async getListOfCountryNamesByCode() {
-    const { response } = await soap({
-      url: url,
-      headers: header,
-      xml: xml
-    });
-    
-    const { body } = response;
 
-    const arrayBody = body.split('\n');
+    try{
 
-    return arrayBody;
-
-    arrayBody.map( (line, index) => {
-      const lineTrimmed = line.trim();
-
-      let isoCode = ''
-      let countryName = ''
-
-      if(lineTrimmed.includes('<m:sISOCode>')){
-        isoCode = lineTrimmed.substr(lineTrimmed.indexOf('>') + 1, 2);
-
-        countryName = arrayBody[index+1].substr(arrayBody[index+1].indexOf('>')+1, arrayBody[index+1].lastIndexOf('<') - arrayBody[index+1].indexOf('>')-1);
+      const { response } = await soap({
+        url: url,
+        headers: header,
+        xml: xml
+      });
       
-        console.log(`${index} : ${isoCode} - ${countryName}`);
-      };
+      const { body } = response;
 
-    });
+      const arrayBody = body.split('\n');
 
-    //console.log(typeof(body));
-    //console.log(objectBody);
-    //console.log(arrayBody);
-    //console.log(response);
-    //console.log(listOfCountry['tagName']);
-    //console.log(Object.keys(listOfCountry));
+      const listOfCountries = [];
+
+      //return arrayBody;
+
+      arrayBody.map( (line, index) => {
+        const lineTrimmed = line.trim();
+
+        let isoCode = ''
+        let countryName = ''
+
+        if(lineTrimmed.includes('<m:sISOCode>')){
+          
+          let countryInfo = '';
+          
+          isoCode = lineTrimmed.substr(lineTrimmed.indexOf('>') + 1, 2);
+
+          countryName = arrayBody[index+1].substr(arrayBody[index+1].indexOf('>')+1, arrayBody[index+1].lastIndexOf('<') - arrayBody[index+1].indexOf('>')-1);
+        
+          countryInfo = `{"ISOCode": ${isoCode}, "countryName": ${countryName}}`;
+
+          listOfCountries = [...listOfCountries, countryInfo] 
+        };
+
+        console.log('Success');
+
+        console.log(listOfCountries);
+
+      });
+    } catch(error){
+      console.log(error);
+    }
   }
-
 };
 

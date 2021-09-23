@@ -1,5 +1,5 @@
 //Responsible to get information from soap api and set in the google sheets db
-const { getSystemErrorMap } = require('util');
+const soapApiConnection = require('../soap-api/getCountryNamesByCode.js');
 const sheetConnection = require('../google-apis/spreadSheetConnection.js');
 
 module.exports = {
@@ -10,13 +10,9 @@ module.exports = {
 
             const sheet = await sheetConnection.sheetsByIndex[0];
 
-            const rows = await sheet.getRows();
-
             await sheet.loadCells('A1:B100');
 
             response.end('Get countries success!');
-
-            next();
         
         }catch(error) {
             console.log(error);
@@ -50,21 +46,18 @@ module.exports = {
         try{
 
             const { sheetId } = request.params;
+            const { data } = request.body;
 
             const sheet = await sheetConnection.sheetsByIndex[sheetId];
 
-            await sheet.addRows([
-                { ISOCode: 'TESTE', countryName: 'teste' },
-                { ISOCode: 'TESTE2', countryName: 'teste2'}            
-            ]);
+            await sheet.addRows(data);
 
             response.end('Success!');
 
         }catch (error) {
-            console.log(error);
+            console.log(`Erro ao tentar inserir lista de países na tabela: ${error}`);
             response.end(error);
-        } 
-
+        }
     }
 };
 

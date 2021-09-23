@@ -20,7 +20,16 @@ routes.get('/insertACountry/:sheetId', countryController.insertACountry);
 routes.get('/insertListOfCountries/:sheetId', countryController.insertListOfCountries);
 
 //test soap api connection
-routes.get('test', soapApi.getListOfCountryNamesByCode);
+routes.get('/test', soapApi.getListOfCountryNamesByCode);
+
+//test request body params
+routes.get('/body', (request, response) => {
+    console.log(request.body);
+    response.send(request.body);
+});
+
+//test getListOfCountryNamesByCode
+routes.get('/getListOfCountryNamesByCode', soapApi.getListOfCountryNamesByCode);
 
 
 //express example for routes handler
