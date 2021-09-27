@@ -7,10 +7,9 @@ const countryController = require('./controllers/countryController.js');
 const routes = express.Router();
 
 //get all countries from google sheets database
-routes.route('/')
-    .get(
-        countryController.getAllCountries,
-        countryController.insertListOfCountries
+routes.get('/', (request, response) => {
+        response.send('Server started');
+      }
     );
 
 //test to insert countrie in google sheets database
@@ -21,15 +20,11 @@ routes.get('/insertListOfCountries/:sheetId', countryController.insertListOfCoun
 
 //test soap api connection
 routes.get('/test', soapApi.getListOfCountryNamesByCode);
-
 //test request body params
 routes.get('/body', (request, response) => {
     console.log(request.body);
     response.send(request.body);
 });
-
-//test getListOfCountryNamesByCode
-routes.get('/getListOfCountryNamesByCode', soapApi.getListOfCountryNamesByCode);
 
 
 //express example for routes handler

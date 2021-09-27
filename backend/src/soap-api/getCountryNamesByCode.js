@@ -29,15 +29,16 @@ module.exports = {
 
       const arrayBody = body.split('\n');
 
-      const listOfCountries = [];
+      let listOfCountries = [{ISOCode: 'Teste', countryName: 'Teste'}];
 
       //return arrayBody;
 
       arrayBody.map( (line, index) => {
+        
         const lineTrimmed = line.trim();
 
-        let isoCode = ''
-        let countryName = ''
+        let isoCode = '';
+        let countryName = '';
 
         if(lineTrimmed.includes('<m:sISOCode>')){
           
@@ -47,16 +48,14 @@ module.exports = {
 
           countryName = arrayBody[index+1].substr(arrayBody[index+1].indexOf('>')+1, arrayBody[index+1].lastIndexOf('<') - arrayBody[index+1].indexOf('>')-1);
         
-          countryInfo = `{"ISOCode": ${isoCode}, "countryName": ${countryName}}`;
+          countryInfo = `{"ISOCode": "${isoCode}", "countryName": "${countryName}"}`;
 
-          listOfCountries = [...listOfCountries, countryInfo] 
+          listOfCountries.push(JSON.parse(countryInfo));
         };
-
-        console.log('Success');
-
-        console.log(listOfCountries);
-
       });
+
+      return listOfCountries;
+
     } catch(error){
       console.log(error);
     }

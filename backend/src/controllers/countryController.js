@@ -1,6 +1,7 @@
-//Responsible to get information from soap api and set in the google sheets db
-const soapApiConnection = require('../soap-api/getCountryNamesByCode.js');
+//Responsible to get information from soap api and set in the google sheet
 const sheetConnection = require('../google-apis/spreadSheetConnection.js');
+
+const getCountries = require('../soap-api/getCountryNamesByCode.js');
 
 module.exports = {
 
@@ -21,7 +22,7 @@ module.exports = {
     },
 
     async insertACountry(request, response) {
-
+        
         try{
 
             const { sheetId } = request.params;
@@ -43,14 +44,18 @@ module.exports = {
 
     async insertListOfCountries(request, response) {
 
+        const listOfCountries = await getCountries.getListOfCountryNamesByCode();
+
+        console.log(listOfCountries);
+
         try{
 
             const { sheetId } = request.params;
-            const { data } = request.body;
+            //const { data } = request.body;
 
             const sheet = await sheetConnection.sheetsByIndex[sheetId];
 
-            await sheet.addRows(data);
+            await sheet.addRows(listOfCountries);
 
             response.end('Success!');
 
