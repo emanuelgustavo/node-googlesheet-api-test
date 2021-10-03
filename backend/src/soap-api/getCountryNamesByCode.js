@@ -4,14 +4,14 @@ const url = 'http://webservices.oorsprong.org/websamples.countryinfo/CountryInfo
 const header = {
   'Content-Type': 'text/xml; charset=utf-8',
   'Content-Length': 'length'
-}
+};
 const xml = `<?xml version="1.0" encoding="utf-8"?>
              <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
               <soap:Body>
                 <ListOfCountryNamesByCode xmlns="http://www.oorsprong.org/websamples.countryinfo">
                 </ListOfCountryNamesByCode>
               </soap:Body>
-            </soap:Envelope>`
+            </soap:Envelope>`;
 
 module.exports = {
   
@@ -34,7 +34,7 @@ module.exports = {
       //return arrayBody;
 
       arrayBody.map( (line, index) => {
-        
+
         const lineTrimmed = line.trim();
 
         let isoCode = '';
