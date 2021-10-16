@@ -5,9 +5,6 @@ const sheetConnection = require('../google-apis/spreadSheetConnection.js');
 
 const url = 'http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?wsdl';
 
-const { getListOfCountryNamesByCode } = require('../soap-api/getCountryNamesByCode.js');
-const { getFullCountryInfo } = require('../soap-api/getFullCountryInfo.js');
-
 module.exports = {
 
     //get all countries from google sheet database
@@ -122,17 +119,7 @@ module.exports = {
         
         try{
             
-            const fullCountryInfo = await getFullCountryInfo(ISOCode);
             
-            const parser = new xml2js.Parser();
-            const parsedFullCountryInfo =  parser.parseString(fullCountryInfo, (error, result) => {
-                    if (error) return error;
-                    return result;
-                });
-            
-            //console.log(parsedFullCountryInfo['soap:Envelope']);
-
-            console.dir(util.inspect(parsedFullCountryInfo, false, null));
                     
         } catch(error) {
             console.error(error);

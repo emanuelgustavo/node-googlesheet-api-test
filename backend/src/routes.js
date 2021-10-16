@@ -17,10 +17,10 @@ routes.get('/insertACountry/:sheetId', countryController.insertACountry);
 routes.get('/insertListOfCountries/:sheetId', countryController.insertListOfCountries);
 
 //Get the countries list from gs
-routes.get('/listOfCountriesByName', countryController.getAllCountries);
+routes.get('/listOfCountriesByName', countryController.getAllCountriesFromGS);
 
 //Get a country by ISOCode from gs
-routes.get('/countryByISOCode/:ISOCode', countryController.getACountryByIsoCode);
+routes.get('/countryByISOCode/:ISOCode', countryController.getACountryByIsoCodeFromGS);
 
 //Get a full country info from api
 routes.get('/getFullCountryInfo/:ISOCode', countryController.getFullCountryInfo);
