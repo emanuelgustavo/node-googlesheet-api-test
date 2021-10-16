@@ -1,16 +1,17 @@
 //Responsible to get information from soap api and set in the google sheet
-const { json } = require('express');
-const xml2js = require('xml2js');
-const util = require('util');
+const soap = require('soap');
 
 const sheetConnection = require('../google-apis/spreadSheetConnection.js');
+
+const url = 'http://webservices.oorsprong.org/websamples.countryinfo/CountryInfoService.wso?wsdl';
 
 const { getListOfCountryNamesByCode } = require('../soap-api/getCountryNamesByCode.js');
 const { getFullCountryInfo } = require('../soap-api/getFullCountryInfo.js');
 
 module.exports = {
 
-    async getAllCountries(request, response) {
+    //get all countries from google sheet database
+    async getAllCountriesFromGS(request, response) {
 
         try{
 
@@ -32,7 +33,8 @@ module.exports = {
         };
     },
 
-    async getACountryByIsoCode(request, response) {
+    //get a country from google sheet database
+    async getACountryByIsoCodeFromGS(request, response) {
 
         const { ISOCode } = request.params;
 
@@ -58,29 +60,40 @@ module.exports = {
 
     },
 
+    //insert a countries list into google sheet database from countries info api
     async insertListOfCountries(request, response) {
+        
+        const { sheetId } = request.params;
+            
+        const sheet = await sheetConnection.sheetsByIndex[sheetId];
 
-        const listOfCountries = await getListOfCountryNamesByCode();
+        const args = {};
 
-        console.log(listOfCountries);
+        soap.createClientAsync(url)
+            .then((client) => {
+                return client.ListOfCountryNamesByCodeAsync(args);
+            })
+            .then((result) => {
 
-        try{
-
-            const { sheetId } = request.params;
-            //const { data } = request.body;
-
-            const sheet = await sheetConnection.sheetsByIndex[sheetId];
-
-            await sheet.addRows(listOfCountries);
-
-            response.end('Success!');
-
-        }catch (error) {
-            console.log(`Erro ao tentar inserir lista de países na tabela: ${error}`);
-            response.end(error);
-        }
+                let resultList = [];
+                const list = result[0].ListOfCountryNamesByCodeResult.tCountryCodeAndName;
+                list.map( country => {
+                resultList.push(country);
+                });
+                
+                console.log('countryController');
+                //console.log(listOfCountries);
+            
+                sheet.addRows(resultList);
+                response.end('Success!');
+            
+            })
+            .catch(error => {
+                console.error(`Erro: ${error}`);
+            });       
     },
 
+    //insert a country into goole sheet database
     async insertACountry(request, response) {
         
         try{
@@ -102,6 +115,7 @@ module.exports = {
         }    
     },
     
+    //get a country full info from api
     async getFullCountryInfo(request, response) {
 
         const { ISOCode } = request.params;

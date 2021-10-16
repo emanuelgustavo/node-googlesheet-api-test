@@ -1,8 +1,8 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const credentials = require('../credentials/credentials.json');
-const sheetId = require('../credentials/sheetsId.js');
+const { sheetIdentification } = require('../credentials/sheetsId.js');
 
-const sheetConnection = new GoogleSpreadsheet(sheetId);
+const sheetConnection = new GoogleSpreadsheet(sheetIdentification);
 
 (async () => {
     await sheetConnection.useServiceAccountAuth(credentials);
